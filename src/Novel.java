@@ -1,7 +1,7 @@
 /**
  * Represents a novel with a title, author's name, and year published.
  *
- * @author Emma Lee
+ * @author Emma Lee, Walter Chu
  * @version 2024
  */
 public class Novel

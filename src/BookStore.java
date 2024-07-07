@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 /**
  * Represents a bookstore that holds a collection of novels.
  *
- *  @author Emma Lee
+ *  @author Emma Lee, Walter Chu
  *  @version 2024
  */
 public class BookStore
@@ -123,9 +123,7 @@ public class BookStore
                 new Novel("Watchmen", "Alan Moore", 1986),
                 new Novel("White Noise", "Don DeLillo", 1985),
                 new Novel("White Teeth", "Zadie Smith", 2000),
-                new Novel("Wide Sargasso Sea", "Jean Rhys", 1966),
-                new Novel("Winesburg, Ohio", "Sherwood Anderson", 1919),
-                new Novel("The Woman Warrior", "Maxine Hong Kingston", 1975)
+                new Novel("Wide Sargasso Sea", "Jean Rhys", 1966)
         ));
     }
 
