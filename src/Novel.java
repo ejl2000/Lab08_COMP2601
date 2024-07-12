@@ -1,7 +1,7 @@
 /**
  * Represents a novel with a title, author's name, and year published.
  *
- * @author Emma Lee, Walter Chu
+ * @author Emma Lee
  * @version 2024
  */
 public class Novel
@@ -13,8 +13,8 @@ public class Novel
     /**
      * Constructs a Novel object with the specified title, author name, and year published.
      *
-     * @param title the title of the novel
-     * @param authorName the name of the author
+     * @param title        the title of the novel
+     * @param authorName   the name of the author
      * @param yearPublished the year the novel was published
      */
     public Novel(final String title,
@@ -54,5 +54,20 @@ public class Novel
     public int getYearPublished()
     {
         return yearPublished;
+    }
+
+    /**
+     * Override of the toString() method to provide a string representation of the Novel object.
+     *
+     * @return string representation of the Novel object
+     */
+    @Override
+    public String toString()
+    {
+        return "Novel: " +
+                "title='" + title + '\'' +
+                ", authorName='" + authorName + '\'' +
+                ", yearPublished=" + yearPublished +
+                '}';
     }
 }

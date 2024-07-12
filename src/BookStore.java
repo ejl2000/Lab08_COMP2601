@@ -1,11 +1,14 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Represents a bookstore that holds a collection of novels.
  *
- *  @author Emma Lee, Walter Chu
- *  @version 2024
+ * @author Emma Lee
+ * @version 2024
  */
 public class BookStore
 {
@@ -94,10 +97,10 @@ public class BookStore
                 new Novel("The Painted Bird", "Jerzy Kosinski", 1965),
                 new Novel("Pale Fire", "Vladimir Nabokov", 1962),
                 new Novel("A Passage to India", "E.M. Forster", 1924),
-                new Novel("Play It as It Lays", "Joan Didion", 1970),
+                new Novel("Play It As It Lays", "Joan Didion", 1970),
                 new Novel("Portnoy's Complaint", "Philip Roth", 1969),
                 new Novel("Possession", "A.S. Byatt", 1990),
-                new Novel("The Power and the Glory", "Graham Greene", 1939),
+                new Novel("The Power and the Glory", "Graham Greene", 1940),
                 new Novel("The Prime of Miss Jean Brodie", "Muriel Spark", 1961),
                 new Novel("Rabbit, Run", "John Updike", 1960),
                 new Novel("Ragtime", "E.L. Doctorow", 1975),
@@ -110,195 +113,119 @@ public class BookStore
                 new Novel("The Sot-Weed Factor", "John Barth", 1960),
                 new Novel("The Sound and the Fury", "William Faulkner", 1929),
                 new Novel("The Sportswriter", "Richard Ford", 1986),
-                new Novel("The Spy Who Came in from the Cold", "John le Carré", 1964),
+                new Novel("The Spy Who Came in from the Cold", "John le Carre", 1963),
                 new Novel("The Sun Also Rises", "Ernest Hemingway", 1926),
                 new Novel("Their Eyes Were Watching God", "Zora Neale Hurston", 1937),
                 new Novel("Things Fall Apart", "Chinua Achebe", 1958),
                 new Novel("To Kill a Mockingbird", "Harper Lee", 1960),
-                new Novel("To the Lighthouse", "Virginia Woolf", 1927),
                 new Novel("Tropic of Cancer", "Henry Miller", 1934),
                 new Novel("Ubik", "Philip K. Dick", 1969),
                 new Novel("Under the Net", "Iris Murdoch", 1954),
                 new Novel("Under the Volcano", "Malcolm Lowry", 1947),
-                new Novel("Watchmen", "Alan Moore", 1986),
+                new Novel("Watchmen", "Alan Moore", 1987),
                 new Novel("White Noise", "Don DeLillo", 1985),
-                new Novel("White Teeth", "Zadie Smith", 2000),
-                new Novel("Wide Sargasso Sea", "Jean Rhys", 1966)
+                new Novel("Wide Sargasso Sea", "Jean Rhys", 1966),
+                new Novel("The Wind-Up Bird Chronicle", "Haruki Murakami", 1994),
+                new Novel("Wise Blood", "Flannery O'Connor", 1952),
+                new Novel("A Wizard of Earthsea", "Ursula K. Le Guin", 1968),
+                new Novel("Wuthering Heights", "Emily Bronte", 1847)
         ));
     }
 
     /**
-     * Prints all novel titles in uppercase.
-     */
-    public void printAllTitles()
-    {
-        novels.stream()
-                .map(novel -> novel.getTitle().toUpperCase())
-                .forEach(System.out::println);
-    }
-
-    /**
-     * Prints all novel titles that contain a specified keyword.
+     * Prints all titles containing the substring in reverse alphabetical order.
      *
-     * @param keyword the keyword to search for in titles
+     * @param substring the substring to search for in titles
      */
-    public void printBookTitle(final String keyword)
+    public void printTitlesContaining(final String substring)
     {
         novels.stream()
-                .filter(novel -> novel.getTitle().toLowerCase().contains(keyword.toLowerCase()))
-                .forEach(novel -> System.out.println(novel.getTitle()));
-    }
-
-    /**
-     * Prints all novel titles in alphabetical order.
-     */
-    public void printTitlesInAlphaOrder()
-    {
-        novels.stream()
+                .filter(novel -> novel.getTitle().toLowerCase().contains(substring.toLowerCase()))
                 .map(Novel::getTitle)
-                .sorted()
+                .sorted(Comparator.reverseOrder())
                 .forEach(System.out::println);
     }
 
     /**
-     * Prints all novels from a specified decade.
+     * Returns the shortest title starting with the specified substring.
      *
-     * @param decade the starting year of the decade
+     * @param substring the substring to search for at the beginning of titles
+     * @return the shortest title starting with the specified substring
      */
-    public void printGroupByDecade(final int decade)
-    {
-        novels.stream()
-                .filter(novel -> novel.getYearPublished() >= decade && novel.getYearPublished() < decade + DECADE_RANGE)
-                .forEach(novel -> System.out.println(novel.getTitle() + " by " + novel.getAuthorName()));
-    }
-
-    /**
-     * Prints the longest novel title.
-     */
-    public void getLongest()
-    {
-        novels.stream()
-                .max(Comparator.comparingInt(novel -> novel.getTitle().length()))
-                .ifPresent(novel -> System.out.println(novel.getTitle()));
-    }
-
-    /**
-     * Checks if there is a book written in a specified year.
-     *
-     * @param year the year to check for
-     * @return true if there is a book written in the specified year, false otherwise
-     */
-    public boolean isThereABookWrittenBetween(final int year)
-    {
-        return novels.stream().anyMatch(novel -> novel.getYearPublished() == year);
-    }
-
-    /**
-     * Counts how many books contain a specified keyword in their titles.
-     *
-     * @param keyword the keyword to search for in titles
-     * @return the number of books containing the keyword in their titles
-     */
-    public long howManyBooksContain(final String keyword)
+    public String getShortestTitleStartingWith(final String substring)
     {
         return novels.stream()
-                .filter(novel -> novel.getTitle().toLowerCase().contains(keyword.toLowerCase()))
-                .count();
+                .filter(novel -> novel.getTitle().toLowerCase().startsWith(substring.toLowerCase()))
+                .min(Comparator.comparingInt(novel -> novel.getTitle().length()))
+                .map(Novel::getTitle)
+                .orElse("No matching title found");
     }
 
     /**
-     * Calculates the percentage of books written between two specified years.
+     * Returns an array of novel references where titles contain a space.
      *
-     * @param startYear the starting year of the range
-     * @param endYear the ending year of the range
-     * @return the percentage of books written between the specified years
+     * @return an array of novel references with titles containing a space
      */
-    public double whichPercentWrittenBetween(final int startYear,
-                                             final int endYear)
-    {
-        final long totalBooks;
-        final long booksInRange;
-
-        totalBooks = novels.size();
-        booksInRange = novels.stream()
-                .filter(novel -> novel.getYearPublished() >= startYear && novel.getYearPublished() <= endYear)
-                .count();
-        return ((double) booksInRange / totalBooks) * PERCENTAGE_CONSTANT;
-    }
-
-    /**
-     * Returns the oldest book in the collection.
-     *
-     * @return the oldest book
-     */
-    public Novel getOldestBook()
+    public Novel[] getAllNovelsWithSpaceInTitle()
     {
         return novels.stream()
-                .min(Comparator.comparingInt(Novel::getYearPublished))
-                .orElse(null);
+                .filter(novel -> novel.getTitle().contains(" "))
+                .toArray(Novel[]::new);
     }
 
     /**
-     * Returns a list of books with titles of a specified length.
+     * Returns an ArrayList of author names who published a novel between firstYear and lastYear (inclusive).
      *
-     * @param length the length of the titles to search for
-     * @return a list of books with titles of the specified length
+     * @param firstYear the starting year of publication
+     * @param lastYear  the ending year of publication
+     * @return an ArrayList of author names who published novels within the specified year range
      */
-    public List<Novel> getBooksThisLength(final int length)
+    public ArrayList<String> getAllAuthorsWhoPublishedBetween(final int firstYear,
+                                                              final int lastYear)
     {
         return novels.stream()
-                .filter(novel -> novel.getTitle().length() == length)
-                .collect(Collectors.toList());
+                .filter(novel -> novel.getYearPublished() >= firstYear && novel.getYearPublished() <= lastYear)
+                .map(Novel::getAuthorName)
+                .distinct()
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
      * Main method to demonstrate the functionality of the BookStore class.
      *
-     * @param args command-line arguments
+     * @param args command-line arguments (not used)
      */
     public static void main(final String[] args)
     {
         final BookStore bookstore;
+        bookstore = new BookStore("Book Emporium");
 
-        bookstore = new BookStore("Classic Novels Collection");
+        // Print titles containing "the" in reverse alphabetical order
+        System.out.println("Titles containing 'the' in reverse alphabetical order:");
+        bookstore.printTitlesContaining("the");
+        System.out.println();
 
-        System.out.println("All Titles in UPPERCASE:");
-        bookstore.printAllTitles();
+        // Get shortest title starting with "the"
+        System.out.println("Shortest title starting with 'the':");
+        String shortestTitle = bookstore.getShortestTitleStartingWith("the");
+        System.out.println(shortestTitle);
+        System.out.println();
 
-        System.out.println("\nBook Titles Containing 'the':");
-        bookstore.printBookTitle("the");
-
-        System.out.println("\nAll Titles in Alphabetical Order:");
-        bookstore.printTitlesInAlphaOrder();
-
-        System.out.println("\nBooks from the 2000s:");
-        bookstore.printGroupByDecade(2000);
-
-        System.out.println("\nLongest Book Title:");
-        bookstore.getLongest();
-
-        System.out.println("\nIs there a book written in 1950?");
-        System.out.println(bookstore.isThereABookWrittenBetween(1950));
-
-        System.out.println("\nHow many books contain 'heart'?");
-        System.out.println(bookstore.howManyBooksContain("heart"));
-
-        System.out.println("\nPercentage of books written between 1940 and 1950:");
-        System.out.println(bookstore.whichPercentWrittenBetween(1940, 1950) + "%");
-
-        System.out.println("\nOldest book:");
-        Novel oldest = bookstore.getOldestBook();
-
-        if (oldest != null)
+        // Get all novels with space in title
+        System.out.println("Novels with space in title:");
+        Novel[] novelsWithSpace = bookstore.getAllNovelsWithSpaceInTitle();
+        for (final Novel novel : novelsWithSpace)
         {
-            System.out.println(oldest.getTitle() + " by " + oldest.getAuthorName() + ", " + oldest.getYearPublished());
+            System.out.println(novel);
         }
+        System.out.println();
 
-        System.out.println("\nBooks with titles 15 characters long:");
-
-        List<Novel> fifteenCharTitles;
-
-        fifteenCharTitles= bookstore.getBooksThisLength(15);
-        fifteenCharTitles.forEach(novel -> System.out.println(novel.getTitle()));
+        // Get all authors who published between 1950 and 1960
+        System.out.println("Authors who published between 1950 and 1960:");
+        ArrayList<String> authors = bookstore.getAllAuthorsWhoPublishedBetween(1950, 1960);
+        for (final String author : authors)
+        {
+            System.out.println(author);
+        }
     }
 }
